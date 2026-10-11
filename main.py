@@ -110,7 +110,7 @@ def rewrite_with_ai(entry):
 
     try:
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",   # مدل قوی و رایگان Groq
+            model="openai/gpt-oss-20b",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.4,
             max_tokens=700,
