@@ -3,6 +3,7 @@ import time
 import hashlib
 import feedparser
 import requests
+import html
 from datetime import datetime, timezone, timedelta
 from groq import Groq
 
@@ -168,7 +169,13 @@ def main():
 
         if rewritten and "تیتر:" in rewritten:
             # کمی تمیزکاری
-            text = rewritten.replace("تیتر:", "<b>").replace("\n\n", "\n\n")
+            text = html.escape(rewritten)
+lines = text.splitlines()
+
+if lines and lines[0].startswith("تیتر:"):
+    lines[0] = "<b>" + lines[0].replace("تیتر:", "", 1).strip() + "</b>"
+
+text = "\n".join(lines)
             if send_to_telegram(text):
                 posted += 1
                 time.sleep(8)  # فاصله بین پست‌ها
