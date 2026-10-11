@@ -168,9 +168,14 @@ def main():
         rewritten = rewrite_with_ai(entry)
 
         if rewritten and "تیتر:" in rewritten:
-            # کمی تمیزکاری
-            text = html.escape(rewritten)
-lines = text.splitlines()
+            lines = html.escape(rewritten).splitlines()
+
+            if lines and lines[0].startswith("تیتر:"):
+                lines[0] = "<b>" + lines[0].replace("تیتر:", "", 1).strip() + "</b>"
+
+            text = "\n".join(lines)
+
+            if send_to_telegram(text):
 
 if lines and lines[0].startswith("تیتر:"):
     lines[0] = "<b>" + lines[0].replace("تیتر:", "", 1).strip() + "</b>"
