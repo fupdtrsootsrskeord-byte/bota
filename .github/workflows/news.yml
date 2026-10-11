@@ -1,0 +1,27 @@
+name: Middle East News Bot
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # هر ۳۰ دقیقه
+  workflow_dispatch:          # امکان اجرای دستی
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run the bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python main.py
